@@ -42,7 +42,7 @@ class ContainerExtension extends Extension
         // Load explicitely configured directories
         $directories = $config['directories'] ?? [];
 
-        if (count($directories) > 0) {
+        if (\count($directories) > 0) {
             // Initialize entity processor to find repository config
             $entityProcessor = new EntityProcessor(new AnnotationReader());
 
@@ -81,22 +81,23 @@ class ContainerExtension extends Extension
                         // Divvy up the namespace and the class name
                         $namespace = $class[0];
                         $className = $class[1];
+                        $fullClassName = $namespace . '\\' . $className;
 
                         // Get repository config as object
-                        $repositoryConfig = $entityProcessor->process($namespace . '\\' . $className);
+                        $repositoryConfig = $entityProcessor->process($fullClassName);
 
                         // Repository config found - this is an entity
                         if (isset($repositoryConfig)) {
                             // Connection can be overwritten in configuration
                             $connectionName =
-                                isset($config['connection_names'][$className]) ?
-                                    $config['connection_names'][$className] :
+                                isset($config['connection_names'][$fullClassName]) ?
+                                    $config['connection_names'][$fullClassName] :
                                     $repositoryConfig->getConnectionName();
 
                             // Table name can be overwritten in configuration
                             $tableName =
-                                isset($config['table_names'][$className]) ?
-                                    $config['table_names'][$className] :
+                                isset($config['table_names'][$fullClassName]) ?
+                                    $config['table_names'][$fullClassName] :
                                     $repositoryConfig->getTableName();
 
                             // Create repository config definition
@@ -110,12 +111,11 @@ class ContainerExtension extends Extension
                                     $repositoryConfig->getObjectClass(),
                                     $repositoryConfig->getObjectTypes(),
                                     $repositoryConfig->getObjectTypesNullable(),
-                                    true,
                                 ]
                             );
 
                             // Specific connection set for this repository
-                            if (strlen($connectionName) > 0) {
+                            if (\strlen($connectionName) > 0) {
                                 $dbReference = 'squirrel.connection.' . $connectionName;
                                 $connectionNames[] = $connectionName;
                             } else { // No connection set - use default connection
@@ -124,9 +124,9 @@ class ContainerExtension extends Extension
                             }
 
                             // ReadOnly builder repository exists
-                            if (class_exists($className . 'RepositoryReadOnly')) {
+                            if (\class_exists($fullClassName . 'RepositoryReadOnly')) {
                                 $builderRepositoryReadOnlyDefinition = new Definition(
-                                    $className . 'RepositoryReadOnly',
+                                    $fullClassName . 'RepositoryReadOnly',
                                     [
                                         new Definition(RepositoryReadOnly::class, [
                                             new Reference($dbReference),
@@ -136,14 +136,14 @@ class ContainerExtension extends Extension
                                 );
 
                                 $container->setDefinition(
-                                    $className . 'RepositoryReadOnly',
+                                    $fullClassName . 'RepositoryReadOnly',
                                     $builderRepositoryReadOnlyDefinition
                                 );
 
                                 // Writeable builder repository exists
-                                if (class_exists($className . 'RepositoryWriteable')) {
+                                if (\class_exists($fullClassName . 'RepositoryWriteable')) {
                                     $builderRepositoryWriteableDefinition = new Definition(
-                                        $className . 'RepositoryWriteable',
+                                        $fullClassName . 'RepositoryWriteable',
                                         [
                                             new Definition(RepositoryWriteable::class, [
                                                 new Reference($dbReference),
@@ -153,7 +153,7 @@ class ContainerExtension extends Extension
                                     );
 
                                     $container->setDefinition(
-                                        $className . 'RepositoryWriteable',
+                                        $fullClassName . 'RepositoryWriteable',
                                         $builderRepositoryWriteableDefinition
                                     );
                                 }
