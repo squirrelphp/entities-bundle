@@ -126,25 +126,8 @@ class SquirrelEntitiesExtension extends Extension
 
         // Go through directories
         foreach ($directories as $directory) {
-            // Find the files in the directory
-            $sourceFinder = new Finder();
-            $sourceFinder->in($directory)->files()->name('*.php');
-
             // Go through files which were found
-            foreach ($sourceFinder as $file) {
-                // Safety check because Finder can return false if the file was not found
-                if ($file->getRealPath()===false) {
-                    throw new \InvalidArgumentException('File in source directory not found');
-                }
-
-                // Get file contents
-                $fileContents = \file_get_contents($file->getRealPath());
-
-                // Another safety check because file_get_contents can return false if the file was not found
-                if ($fileContents===false) {
-                    throw new \InvalidArgumentException('File in source directory could not be retrieved');
-                }
-
+            foreach ($this->findNextFileAndReturnContentsGenerator($directory) as $fileContents) {
                 // Get all possible entity classes with our annotation
                 $entityClasses = \array_merge(
                     $entityClasses,
@@ -156,15 +139,48 @@ class SquirrelEntitiesExtension extends Extension
         return $entityClasses;
     }
 
+    private function findNextFileAndReturnContentsGenerator($directory)
+    {
+        // Find the files in the directory
+        $sourceFinder = new Finder();
+        $sourceFinder->in($directory)->files()->name('*.php');
+
+        // Go through files which were found
+        foreach ($sourceFinder as $file) {
+            // Safety check because Finder can return false if the file was not found
+            if ($file->getRealPath()===false) {
+                throw new \InvalidArgumentException('File in source directory not found');
+            }
+
+            // Get file contents
+            $fileContents = \file_get_contents($file->getRealPath());
+
+            // Another safety check because file_get_contents can return false if the file was not found
+            if ($fileContents===false) {
+                throw new \InvalidArgumentException('File in source directory could not be retrieved');
+            }
+
+            // Return the file contents as a generator
+            yield $fileContents;
+        }
+    }
+
+    /**
+     * @param ContainerBuilder $container
+     * @param RepositoryConfig $repositoryConfig Configuration of repository according to annotations
+     * @param string|null $overrideConnectionName Connection name should be replaced by this configuration setting
+     * @param string|null $overrideTableName Table name should be replaced by this configuration setting
+     * @return string Connection name (as used when decorating the connection) for this entity
+     */
     private function createRepositoryServicesForEntity(
         ContainerBuilder $container,
         RepositoryConfig $repositoryConfig,
-        ?string $customConnectionName,
-        ?string $customTableName
-    ): ?string {
+        ?string $overrideConnectionName,
+        ?string $overrideTableName
+    ): string {
         // Connection can be overwritten in configuration
-        $connectionName = isset($customConnectionName)
-            ? $customConnectionName
+        $connectionName = isset($overrideConnectionName)
+            ? $overrideConnectionName
             : $repositoryConfig->getConnectionName();
 
         // No ReadOnly repository - exit early
@@ -173,43 +189,35 @@ class SquirrelEntitiesExtension extends Extension
         }
 
         // Table name can be overwritten in configuration
-        $tableName = isset($customTableName)
-            ? $customTableName
+        $tableName = isset($overrideTableName)
+            ? $overrideTableName
             : $repositoryConfig->getTableName();
 
         // Create repository config definition
-        $repositoryConfigDef = new Definition(
-            RepositoryConfig::class,
-            [
-                $connectionName,
-                $tableName,
-                $repositoryConfig->getTableToObjectFields(),
-                $repositoryConfig->getObjectToTableFields(),
-                $repositoryConfig->getObjectClass(),
-                $repositoryConfig->getObjectTypes(),
-                $repositoryConfig->getObjectTypesNullable(),
-            ]
-        );
+        $repositoryConfigDef = new Definition(RepositoryConfig::class, [
+            $connectionName,
+            $tableName,
+            $repositoryConfig->getTableToObjectFields(),
+            $repositoryConfig->getObjectToTableFields(),
+            $repositoryConfig->getObjectClass(),
+            $repositoryConfig->getObjectTypes(),
+            $repositoryConfig->getObjectTypesNullable(),
+        ]);
 
         // Convention for squirrel connection services
-        $dbReference = 'squirrel.connection.' . $connectionName;
-
-        // No connection name set - use default class type hint
-        if (\strlen($connectionName) === 0) {
-            $dbReference = DBInterface::class;
-        }
+        $dbReference = ( \strlen($connectionName) === 0
+            ? DBInterface::class                       // Default connection
+            : 'squirrel.connection.' . $connectionName // Specific connection
+        );
 
         $container->setDefinition(
             $repositoryConfig->getObjectClass() . 'RepositoryReadOnly',
-            new Definition(
-                $repositoryConfig->getObjectClass() . 'RepositoryReadOnly',
-                [
-                    new Definition(RepositoryReadOnly::class, [
-                        new Reference($dbReference),
-                        $repositoryConfigDef,
-                    ]),
-                ]
-            )
+            new Definition($repositoryConfig->getObjectClass() . 'RepositoryReadOnly', [
+                new Definition(RepositoryReadOnly::class, [
+                    new Reference($dbReference),
+                    $repositoryConfigDef,
+                ]),
+            ])
         );
 
         // No writeable repository exists
@@ -219,15 +227,12 @@ class SquirrelEntitiesExtension extends Extension
 
         $container->setDefinition(
             $repositoryConfig->getObjectClass() . 'RepositoryWriteable',
-            new Definition(
-                $repositoryConfig->getObjectClass() . 'RepositoryWriteable',
-                [
-                    new Definition(RepositoryWriteable::class, [
-                        new Reference($dbReference),
-                        $repositoryConfigDef,
-                    ]),
-                ]
-            )
+            new Definition($repositoryConfig->getObjectClass() . 'RepositoryWriteable', [
+                new Definition(RepositoryWriteable::class, [
+                    new Reference($dbReference),
+                    $repositoryConfigDef,
+                ]),
+            ])
         );
 
         return $connectionName;
@@ -236,11 +241,6 @@ class SquirrelEntitiesExtension extends Extension
     private function createTransactionServices(ContainerBuilder $container, array $connectionNames)
     {
         foreach ($connectionNames as $connectionName) {
-            // Skip connections where no repositories were created
-            if (\is_null($connectionName)) {
-                continue;
-            }
-
             // Default service name conventions
             $serviceName = 'squirrel.transaction.' . $connectionName;
             $connectionService = 'squirrel.connection.' . $connectionName;
