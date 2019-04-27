@@ -2,13 +2,19 @@
 
 namespace Squirrel\EntitiesBundle;
 
-use Squirrel\EntitiesBundle\DependencyInjection\ContainerExtension;
+use Doctrine\Common\Annotations\AnnotationReader;
+use Squirrel\Entities\Annotation\EntityProcessor;
+use Squirrel\Entities\Generate\FindClassesWithAnnotation;
+use Squirrel\EntitiesBundle\DependencyInjection\SquirrelEntitiesExtension;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class SquirrelEntitiesBundle extends Bundle
 {
     public function getContainerExtension()
     {
-        return new ContainerExtension();
+        return new SquirrelEntitiesExtension(
+            new EntityProcessor(new AnnotationReader()),
+            new FindClassesWithAnnotation()
+        );
     }
 }
