@@ -202,6 +202,7 @@ class SquirrelEntitiesExtension extends Extension
             $repositoryConfig->getObjectClass(),
             $repositoryConfig->getObjectTypes(),
             $repositoryConfig->getObjectTypesNullable(),
+            $repositoryConfig->getAutoincrementField(),
         ]);
 
         // Convention for squirrel connection services
