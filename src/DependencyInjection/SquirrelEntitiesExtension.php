@@ -53,9 +53,11 @@ class SquirrelEntitiesExtension extends Extension
     /**
      * @inheritdoc
      */
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
-        // Load and merge configuration
+        /**
+         * @var Configuration $configuration
+         */
         $configuration = $this->getConfiguration([], $container);
         $config = $this->processConfiguration($configuration, $configs);
 
@@ -82,7 +84,7 @@ class SquirrelEntitiesExtension extends Extension
         return 'squirrel_entities';
     }
 
-    private function findEntitiesAndProcess(ContainerBuilder $container, $config)
+    private function findEntitiesAndProcess(ContainerBuilder $container, ?array $config): void
     {
         // No directories defined - this is mandatory
         if (\count($config['directories'] ?? []) === 0) {
@@ -100,6 +102,10 @@ class SquirrelEntitiesExtension extends Extension
             // Divvy up the namespace and the class name
             $namespace = $class[0];
             $className = $class[1];
+
+            /**
+             * @psalm-var class-string $fullClassName
+             */
             $fullClassName = $namespace . '\\' . $className;
 
             // Get repository config as object
@@ -120,7 +126,7 @@ class SquirrelEntitiesExtension extends Extension
         $this->createTransactionServices($container, $connectionNames);
     }
 
-    private function findAllEntityClassesInFilesystem(array $directories)
+    private function findAllEntityClassesInFilesystem(array $directories): array
     {
         $entityClasses = [];
 
@@ -139,7 +145,7 @@ class SquirrelEntitiesExtension extends Extension
         return $entityClasses;
     }
 
-    private function findNextFileAndReturnContentsGenerator($directory)
+    private function findNextFileAndReturnContentsGenerator(string $directory): \Generator
     {
         // Find the files in the directory
         $sourceFinder = new Finder();
@@ -243,7 +249,7 @@ class SquirrelEntitiesExtension extends Extension
         return $connectionName;
     }
 
-    private function createTransactionServices(ContainerBuilder $container, array $connectionNames)
+    private function createTransactionServices(ContainerBuilder $container, array $connectionNames): void
     {
         foreach ($connectionNames as $connectionName) {
             // Default service name conventions
@@ -263,7 +269,7 @@ class SquirrelEntitiesExtension extends Extension
         }
     }
 
-    private function createMultiRepositoryServices(ContainerBuilder $container)
+    private function createMultiRepositoryServices(ContainerBuilder $container): void
     {
         // Base multi repository services
         $container->setDefinition(

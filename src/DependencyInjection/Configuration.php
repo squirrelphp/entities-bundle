@@ -25,12 +25,14 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root($this->alias);
 
-        /*
+        /**
          * The only configuration options are:
          *
          * - directories (there are no default directories)
          * - table_names (overwriting annotated table names)
          * - connection_names (overwriting annotated connection names)
+         *
+         * @psalm-suppress PossiblyUndefinedMethod
          */
         $rootNode
             ->fixXmlConfig('directory', 'directories')
