@@ -5,7 +5,7 @@ Squirrel Entities Integration for Symfony
 
 Integration of [squirrelphp/entities](https://github.com/squirrelphp/entities) into Symfony through bundle configuration, also needs [squirrelphp/queries-bundle](https://github.com/squirrelphp/queries-bundle) as a basis for connecting to databases and executing queries.
 
-nstallation
+Installation
 ------------
 
 ```
