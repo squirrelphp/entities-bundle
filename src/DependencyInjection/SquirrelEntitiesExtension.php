@@ -147,18 +147,22 @@ class SquirrelEntitiesExtension extends Extension
 
         // Go through files which were found
         foreach ($sourceFinder as $file) {
+            // @codeCoverageIgnoreStart
             // Safety check because Finder can return false if the file was not found
             if ($file->getRealPath()===false) {
                 throw new \InvalidArgumentException('File in source directory not found');
             }
+            // @codeCoverageIgnoreEnd
 
             // Get file contents
             $fileContents = \file_get_contents($file->getRealPath());
 
+            // @codeCoverageIgnoreStart
             // Another safety check because file_get_contents can return false if the file was not found
             if ($fileContents===false) {
                 throw new \InvalidArgumentException('File in source directory could not be retrieved');
             }
+            // @codeCoverageIgnoreEnd
 
             // Return the file contents as a generator
             yield $fileContents;

@@ -8,6 +8,9 @@ use Squirrel\Entities\Generate\FindClassesWithAnnotation;
 use Squirrel\EntitiesBundle\DependencyInjection\SquirrelEntitiesExtension;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
+/**
+ * @codeCoverageIgnore Just adds the extension, there is nothing to test
+ */
 class SquirrelEntitiesBundle extends Bundle
 {
     public function getContainerExtension()
