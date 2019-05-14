@@ -28,8 +28,8 @@
         "symfony/http-kernel": "^4.0",
         "symfony/finder": "^4.0",
         "symfony/config": "^4.0",
-        "squirrelphp/queries-bundle": "^0.7.2",
-        "squirrelphp/entities": "^0.4.2"
+        "squirrelphp/queries-bundle": "^0.8",
+        "squirrelphp/entities": "^0.5"
     },
     "require-dev": {
         "captainhook/plugin-composer": "^4.0",
@@ -56,6 +56,7 @@
     },
     "scripts": {
         "phpstan": "vendor/bin/phpstan analyse src --level=7",
+        "psalm": "vendor/bin/psalm",
         "phpunit": "vendor/bin/phpunit --colors=always",
         "phpcs": "vendor/bin/phpcs --standard=ruleset.xml --extensions=php --ignore=tests/TestEntities,tests/TestEntities2 src tests",
         "codecoverage": "vendor/bin/phpunit --coverage-html tests/_reports"
