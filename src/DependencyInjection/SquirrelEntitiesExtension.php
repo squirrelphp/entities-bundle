@@ -87,7 +87,7 @@ class SquirrelEntitiesExtension extends Extension
     private function findEntitiesAndProcess(ContainerBuilder $container, ?array $config): void
     {
         // No directories defined - this is mandatory
-        if (\count($config['directories'] ?? []) === 0) {
+        if (!isset($config) || \count($config['directories'] ?? []) === 0) {
             return;
         }
 
