@@ -24,12 +24,14 @@ class Configuration implements ConfigurationInterface
     {
         $treeBuilder = new TreeBuilder($this->alias);
 
+        // @codeCoverageIgnoreStart
         // Symfony 4.2+ (where root() method is deprecated)
         if (method_exists($treeBuilder, 'getRootNode')) {
             $rootNode = $treeBuilder->getRootNode();
         } else { // Symfony 4.1 and below (where one needs to use the root() method)
             $rootNode = $treeBuilder->root($this->alias);
         }
+        // @codeCoverageIgnoreEnd
 
         /**
          * The only configuration options are:
