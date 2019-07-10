@@ -28,8 +28,8 @@
         "symfony/http-kernel": "^4.0",
         "symfony/finder": "^4.0",
         "symfony/config": "^4.0",
-        "squirrelphp/queries-bundle": "^0.8",
-        "squirrelphp/entities": "^0.5.3"
+        "squirrelphp/queries-bundle": "^0.9",
+        "squirrelphp/entities": "^0.6"
     },
     "require-dev": {
         "captainhook/plugin-composer": "^4.0",
