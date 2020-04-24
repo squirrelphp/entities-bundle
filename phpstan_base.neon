@@ -1,7 +1,0 @@
-parameters:
-    level: 8
-    paths:
-        - src
-    checkMissingIterableValueType: false
-    excludes_analyse:
-        - src/DependencyInjection/Configuration.php

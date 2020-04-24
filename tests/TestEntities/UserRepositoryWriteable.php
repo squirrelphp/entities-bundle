@@ -19,10 +19,7 @@ namespace Squirrel\EntitiesBundle\Tests\TestEntities {
     class UserRepositoryWriteable extends UserRepositoryReadOnly implements
         RepositoryBuilderWriteableInterface
     {
-        /**
-         * @var RepositoryWriteableInterface
-         */
-        private $repository;
+        private RepositoryWriteableInterface $repository;
 
         public function __construct(RepositoryWriteableInterface $repository)
         {

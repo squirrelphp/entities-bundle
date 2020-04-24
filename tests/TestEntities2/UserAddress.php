@@ -4,109 +4,70 @@ namespace Squirrel\EntitiesBundle\Tests\TestEntities2;
 
 use Squirrel\Entities\Annotation\Entity;
 use Squirrel\Entities\Annotation\Field;
+use Squirrel\Entities\EntityConstructorTrait;
 
 /**
  * @Entity("users_address")
  */
 class UserAddress
 {
-    /**
-     * @Field("user_id", type="int")
-     *
-     * @var integer
-     */
-    private $userId = 0;
+    use EntityConstructorTrait;
 
     /**
-     * @Field("at_home", type="bool")
-     *
-     * @var bool
+     * @Field("user_id")
      */
-    private $atHome = false;
+    private int $userId = 0;
+
+    /**
+     * @Field("at_home")
+     */
+    private bool $atHome = false;
 
     /**
      * @Field("street_name")
-     *
-     * @var string
      */
-    private $streetName = '';
+    private string $streetName = '';
 
     /**
      * @Field("street_number")
-     *
-     * @var string
      */
-    private $streetNumber = '';
+    private string $streetNumber = '';
 
     /**
      * @Field("city")
-     *
-     * @var string
      */
-    private $city = '';
+    private string $city = '';
 
     /**
-     * @Field("picture", type="blob")
-     *
-     * @var string
+     * @Field("picture", blob=true)
      */
-    private $picture = '';
+    private string $picture = '';
 
-    /**
-     * Initialize the object with an array - not used by repository, just for testing
-     *
-     * @param array $data
-     */
-    public function __construct(array $data)
-    {
-        foreach ($data as $key => $value) {
-            $this->$key = $value;
-        }
-    }
-
-    /**
-     * @return int
-     */
     public function getUserId(): int
     {
         return $this->userId;
     }
 
-    /**
-     * @return bool
-     */
     public function isAtHome(): bool
     {
         return $this->atHome;
     }
 
-    /**
-     * @return string
-     */
     public function getStreetName(): string
     {
         return $this->streetName;
     }
 
-    /**
-     * @return string
-     */
     public function getStreetNumber(): string
     {
         return $this->streetNumber;
     }
 
-    /**
-     * @return string
-     */
     public function getCity(): string
     {
         return $this->city;
     }
 
-    /**
-     * @return string
-     */
     public function getPicture(): string
     {
         return $this->picture;

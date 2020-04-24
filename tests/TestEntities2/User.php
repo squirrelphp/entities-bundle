@@ -3,154 +3,100 @@
 namespace Squirrel\EntitiesBundle\Tests\TestEntities2;
 
 use Squirrel\Entities\Annotation as SQL;
+use Squirrel\Entities\EntityConstructorTrait;
 
 /**
  * @SQL\Entity("users")
  */
 class User
 {
-    /**
-     * @SQL\Field("user_id", type="int", autoincrement=true)
-     *
-     * @var integer
-     */
-    private $userId = 0;
+    use EntityConstructorTrait;
 
     /**
-     * @SQL\Field("active", type="bool")
-     *
-     * @var bool
+     * @SQL\Field("user_id", autoincrement=true)
      */
-    private $active = false;
+    private int $userId = 0;
+
+    /**
+     * @SQL\Field("active")
+     */
+    private bool $active = false;
 
     /**
      * @SQL\Field("user_name")
-     *
-     * @var string
      */
-    private $userName = '';
+    private string $userName = '';
 
     /**
      * @SQL\Field("login_name_md5")
-     *
-     * @var string
      */
-    private $loginNameMD5 = '';
+    private string $loginNameMD5 = '';
 
     /**
      * @SQL\Field("login_password")
-     *
-     * @var string
      */
-    private $loginPassword = '';
+    private string $loginPassword = '';
 
     /**
      * @SQL\Field("email_address")
-     *
-     * @var string
      */
-    private $emailAddress = '';
+    private string $emailAddress = '';
 
     /**
-     * @SQL\Field("balance", type="float")
-     *
-     * @var float
+     * @SQL\Field("balance")
      */
-    private $balance = 0;
+    private float $balance = 0;
 
     /**
-     * @SQL\Field("location_id", type="int", nullable=true)
-     *
-     * @var int|null
+     * @SQL\Field("location_id")
      */
-    private $locationId;
+    private ?int $locationId;
 
     /**
-     * @SQL\Field("create_date", type="int")
-     *
-     * @var integer
+     * @SQL\Field("create_date")
      */
-    private $createDate = 0;
+    private int $createDate = 0;
 
-    /**
-     * Initialize the object with an array - not used by repository, just for testing
-     *
-     * @param array $data
-     */
-    public function __construct(array $data)
-    {
-        foreach ($data as $key => $value) {
-            $this->$key = $value;
-        }
-    }
-
-    /**
-     * @return int
-     */
     public function getUserId(): int
     {
         return $this->userId;
     }
 
-    /**
-     * @return bool
-     */
     public function isActive(): bool
     {
         return $this->active;
     }
 
-    /**
-     * @return string
-     */
     public function getUserName(): string
     {
         return $this->userName;
     }
 
-    /**
-     * @return string
-     */
     public function getLoginNameMD5(): string
     {
         return $this->loginNameMD5;
     }
 
-    /**
-     * @return string
-     */
     public function getLoginPassword(): string
     {
         return $this->loginPassword;
     }
 
-    /**
-     * @return string
-     */
     public function getEmailAddress(): string
     {
         return $this->emailAddress;
     }
 
-    /**
-     * @return float
-     */
     public function getBalance(): float
     {
         return $this->balance;
     }
 
-    /**
-     * @return int|null
-     */
     public function getLocationId(): ?int
     {
         return $this->locationId;
     }
 
-    /**
-     * @return int
-     */
     public function getCreateDate(): int
     {
         return $this->createDate;

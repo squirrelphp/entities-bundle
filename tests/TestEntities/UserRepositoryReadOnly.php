@@ -15,24 +15,21 @@
 namespace Squirrel\EntitiesBundle\Tests\TestEntities {
     use Squirrel\Entities\RepositoryBuilderReadOnlyInterface;
     use Squirrel\Entities\RepositoryReadOnlyInterface;
-  
+
     class UserRepositoryReadOnly implements RepositoryBuilderReadOnlyInterface
     {
-        /**
-         * @var RepositoryReadOnlyInterface
-         */
-        private $repository;
-        
+        private RepositoryReadOnlyInterface $repository;
+
         public function __construct(RepositoryReadOnlyInterface $repository)
         {
             $this->repository = $repository;
         }
-        
+
         public function count(): \Squirrel\Entities\Action\CountEntries
         {
             return new \Squirrel\Entities\Action\CountEntries($this->repository);
         }
-      
+
         public function select(): \Squirrel\Entities\Action\SquirrelEntitiesBundleTestsTestEntitiesUser\SelectEntries
         {
             return new \Squirrel\Entities\Action\SquirrelEntitiesBundleTestsTestEntitiesUser\SelectEntries($this->repository);
@@ -41,72 +38,76 @@ namespace Squirrel\EntitiesBundle\Tests\TestEntities {
 }
 
 namespace Squirrel\Entities\Action\SquirrelEntitiesBundleTestsTestEntitiesUser {
-    /*
+    /**
      * This class exists to have proper type hints about the object(s) returned in the
      * getEntries and getOneEntry functions. All calls are delegated to the
      * SelectEntries class - because of the builder pattern we cannot extend SelectEntries
      * (because then returning self would return that class instead of this extended class)
      * so we instead imitate it. This way the implementation in SelectEntries can change
      * and this generated class has no ties to how it "works" or how the repository is used.
+     *
+     * @implements \IteratorAggregate<int,\Squirrel\EntitiesBundle\Tests\TestEntities\User>
      */
     class SelectEntries implements \Squirrel\Entities\Action\ActionInterface, \IteratorAggregate
     {
-        /**
-         * @var \Squirrel\Entities\Action\SelectEntries
-         */
-        private $selectImplementation;
-      
+        private \Squirrel\Entities\Action\SelectEntries $selectImplementation;
+
         public function __construct(\Squirrel\Entities\RepositoryReadOnlyInterface $repository)
         {
             $this->selectImplementation = new \Squirrel\Entities\Action\SelectEntries($repository);
         }
-        
+
         public function field(string $onlyGetThisField): self
         {
             $this->selectImplementation->field($onlyGetThisField);
             return $this;
         }
-      
+
+        /**
+         * @param string[] $onlyGetTheseFields
+         */
         public function fields(array $onlyGetTheseFields): self
         {
             $this->selectImplementation->fields($onlyGetTheseFields);
             return $this;
         }
-        
+
+        /**
+         * @param array<int|string,mixed> $whereClauses
+         */
         public function where(array $whereClauses): self
         {
             $this->selectImplementation->where($whereClauses);
             return $this;
         }
-      
+
         /**
-         * @param array|string $orderByClauses
-         * @return SelectEntries
+         * @param array<int|string,string>|string $orderByClauses
          */
         public function orderBy($orderByClauses): self
         {
             $this->selectImplementation->orderBy($orderByClauses);
             return $this;
         }
-      
+
         public function startAt(int $startAtNumber): self
         {
             $this->selectImplementation->startAt($startAtNumber);
             return $this;
         }
-      
+
         public function limitTo(int $numberOfEntries): self
         {
             $this->selectImplementation->limitTo($numberOfEntries);
             return $this;
         }
-      
+
         public function blocking(bool $active = true): self
         {
             $this->selectImplementation->blocking($active);
             return $this;
         }
-        
+
         /**
          * @return \Squirrel\EntitiesBundle\Tests\TestEntities\User[]
          */
@@ -114,73 +115,70 @@ namespace Squirrel\Entities\Action\SquirrelEntitiesBundleTestsTestEntitiesUser {
         {
             return $this->selectImplementation->getAllEntries();
         }
-        
+
         public function getOneEntry(): ?\Squirrel\EntitiesBundle\Tests\TestEntities\User
         {
-            return $this->selectImplementation->getOneEntry();
+            $entry = $this->selectImplementation->getOneEntry();
+
+            if ($entry instanceof \Squirrel\EntitiesBundle\Tests\TestEntities\User || $entry === null) {
+                return $entry;
+            }
+
+            throw new \LogicException('Unexpected type encountered - wrong repository might be configured: ' . \get_class($entry));
         }
-        
+
         /**
-         * @return string[]|int[]|float[]|bool[]|null[]
+         * @return array<bool|int|float|string|null>
          */
         public function getFlattenedFields(): array
         {
             return $this->selectImplementation->getFlattenedFields();
         }
-        
+
         public function getIterator(): SelectIterator
         {
             return new SelectIterator($this->selectImplementation->getIterator());
         }
     }
-    
+
+    /**
+     * @implements \Iterator<int,\Squirrel\EntitiesBundle\Tests\TestEntities\User>
+     */
     class SelectIterator implements \Squirrel\Entities\Action\ActionInterface, \Iterator
     {
-        /**
-         * \Squirrel\Entities\Action\SelectIterator
-         */
-        private $iteratorInstance;
-    
+        private \Squirrel\Entities\Action\SelectIterator $iteratorInstance;
+
         public function __construct(\Squirrel\Entities\Action\SelectIterator $iterator)
         {
             $this->iteratorInstance = $iterator;
         }
-    
-        /**
-         * @return \Squirrel\EntitiesBundle\Tests\TestEntities\User|null
-         */
-        public function current()
+
+        public function current(): \Squirrel\EntitiesBundle\Tests\TestEntities\User
         {
             return $this->iteratorInstance->current();
         }
-    
-        public function next()
+
+        public function next(): void
         {
             $this->iteratorInstance->next();
         }
-    
-        /**
-         * @return int
-         */
-        public function key()
+
+        public function key(): int
         {
             return $this->iteratorInstance->key();
         }
-    
-        /**
-         * @return bool
-         */
-        public function valid()
+
+        public function valid(): bool
         {
             return $this->iteratorInstance->valid();
         }
-    
-        public function rewind()
+
+        public function rewind(): void
         {
             $this->iteratorInstance->rewind();
         }
-    
-        public function clear()
+
+        public function clear(): void
         {
             $this->iteratorInstance->clear();
         }

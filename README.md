@@ -1,7 +1,7 @@
 Squirrel Entities Integration for Symfony
 =========================================
 
-[![Build Status](https://img.shields.io/travis/com/squirrelphp/entities-bundle.svg)](https://travis-ci.com/squirrelphp/entities-bundle) [![Test Coverage](https://api.codeclimate.com/v1/badges/a1673a906f5c334125c1/test_coverage)](https://codeclimate.com/github/squirrelphp/entities-bundle/test_coverage) ![PHPStan](https://img.shields.io/badge/style-level%207-success.svg?style=flat-round&label=phpstan) [![Packagist Version](https://img.shields.io/packagist/v/squirrelphp/entities-bundle.svg?style=flat-round)](https://packagist.org/packages/squirrelphp/entities-bundle) [![PHP Version](https://img.shields.io/packagist/php-v/squirrelphp/entities-bundle.svg)](https://packagist.org/packages/squirrelphp/entities-bundle) [![Software License](https://img.shields.io/badge/license-MIT-success.svg?style=flat-round)](LICENSE)
+[![Build Status](https://img.shields.io/travis/com/squirrelphp/entities-bundle.svg)](https://travis-ci.com/squirrelphp/entities-bundle) [![Test Coverage](https://api.codeclimate.com/v1/badges/a1673a906f5c334125c1/test_coverage)](https://codeclimate.com/github/squirrelphp/entities-bundle/test_coverage) ![PHPStan](https://img.shields.io/badge/style-level%208-success.svg?style=flat-round&label=phpstan) [![Packagist Version](https://img.shields.io/packagist/v/squirrelphp/entities-bundle.svg?style=flat-round)](https://packagist.org/packages/squirrelphp/entities-bundle) [![PHP Version](https://img.shields.io/packagist/php-v/squirrelphp/entities-bundle.svg)](https://packagist.org/packages/squirrelphp/entities-bundle) [![Software License](https://img.shields.io/badge/license-MIT-success.svg?style=flat-round)](LICENSE)
 
 Integration of [squirrelphp/entities](https://github.com/squirrelphp/entities) into Symfony through bundle configuration, also needs [squirrelphp/queries-bundle](https://github.com/squirrelphp/queries-bundle) as a basis for connecting to databases and executing queries.
 
@@ -23,7 +23,7 @@ Configure the directories where the bundle will look for repositories like this 
         directories:
             - '%kernel.project_dir%/src'
             - '%kernel.project_dir%/possibleOtherDirectory'
-            
+
 It will go through these directories recusively, finding all entities and generated repositories and creating services for the repositories. The details on how to work with the repositories can be found in the documentation for the underlying library [squirrelphp/entities](https://github.com/squirrelphp/entities).
 
 Overriding table names and connection names
@@ -38,8 +38,8 @@ If you are reusing entities from other projects and only want to change the conn
         table_names:
             Application\Entity\User: 'differentdatabase.users'
             Application\Entity\Session: 'sessions_table'
-            
-This can also come in handy if you want to change connection names and table names for testing or development, while the annotation values are for the production system. Just use the fully qualified entity class name as the key. If you specify an empty string as connection name the default connection is used (if a default connection was defined through `QueriesBundle`). 
+
+This can also come in handy if you want to change connection names and table names for testing or development, while the annotation values are for the production system. Just use the fully qualified entity class name as the key. If you specify an empty string as connection name the default connection is used (if a default connection was defined through `QueriesBundle`).
 
 Workflow with entities and repositories
 ---------------------------------------

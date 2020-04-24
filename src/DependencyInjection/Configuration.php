@@ -7,19 +7,13 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 class Configuration implements ConfigurationInterface
 {
-    /**
-     * @var string Configuration alias
-     */
-    private $alias;
+    private string $alias;
 
     public function __construct(string $alias)
     {
         $this->alias = $alias;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder($this->alias);

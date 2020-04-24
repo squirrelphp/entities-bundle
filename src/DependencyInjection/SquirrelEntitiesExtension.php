@@ -29,15 +29,8 @@ use Symfony\Component\Finder\Finder;
  */
 class SquirrelEntitiesExtension extends Extension
 {
-    /**
-     * @var EntityProcessor
-     */
-    private $entityProcessor;
-
-    /**
-     * @var FindClassesWithAnnotation
-     */
-    private $identifyEntityClasses;
+    private EntityProcessor $entityProcessor;
+    private FindClassesWithAnnotation $identifyEntityClasses;
 
     public function __construct(
         EntityProcessor $entityProcessor,
@@ -50,9 +43,6 @@ class SquirrelEntitiesExtension extends Extension
         $this->identifyEntityClasses = $findClassesWithAnnotation;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function load(array $configs, ContainerBuilder $container): void
     {
         /**
@@ -68,17 +58,11 @@ class SquirrelEntitiesExtension extends Extension
         $this->createMultiRepositoryServices($container);
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getConfiguration(array $config, ContainerBuilder $container)
     {
         return new Configuration($this->getAlias());
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getAlias()
     {
         return 'squirrel_entities';
@@ -155,7 +139,7 @@ class SquirrelEntitiesExtension extends Extension
         foreach ($sourceFinder as $file) {
             // @codeCoverageIgnoreStart
             // Safety check because Finder can return false if the file was not found
-            if ($file->getRealPath()===false) {
+            if ($file->getRealPath() === false) {
                 throw new \InvalidArgumentException('File in source directory not found');
             }
             // @codeCoverageIgnoreEnd
@@ -165,7 +149,7 @@ class SquirrelEntitiesExtension extends Extension
 
             // @codeCoverageIgnoreStart
             // Another safety check because file_get_contents can return false if the file was not found
-            if ($fileContents===false) {
+            if ($fileContents === false) {
                 throw new \InvalidArgumentException('File in source directory could not be retrieved');
             }
             // @codeCoverageIgnoreEnd
