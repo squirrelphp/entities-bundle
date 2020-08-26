@@ -17,7 +17,7 @@ class SquirrelEntitiesBundle extends Bundle
     {
         return new SquirrelEntitiesExtension(
             new EntityProcessor(new AnnotationReader()),
-            new FindClassesWithAnnotation()
+            new FindClassesWithAnnotation(),
         );
     }
 }

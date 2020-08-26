@@ -101,7 +101,7 @@ class SquirrelEntitiesExtension extends Extension
                     $container,
                     $repositoryConfig,
                     $config['connection_names'][$fullClassName] ?? null,
-                    $config['table_names'][$fullClassName] ?? null
+                    $config['table_names'][$fullClassName] ?? null,
                 );
             }
         }
@@ -121,7 +121,7 @@ class SquirrelEntitiesExtension extends Extension
                 // Get all possible entity classes with our annotation
                 $entityClasses = \array_merge(
                     $entityClasses,
-                    $this->identifyEntityClasses->__invoke($fileContents)
+                    $this->identifyEntityClasses->__invoke($fileContents),
                 );
             }
         }
@@ -212,7 +212,7 @@ class SquirrelEntitiesExtension extends Extension
                     new Reference($dbReference),
                     $repositoryConfigDef,
                 ]),
-            ])
+            ]),
         );
 
         // No writeable repository exists
@@ -227,7 +227,7 @@ class SquirrelEntitiesExtension extends Extension
                     new Reference($dbReference),
                     $repositoryConfigDef,
                 ]),
-            ])
+            ]),
         );
 
         return $connectionName;
@@ -248,7 +248,7 @@ class SquirrelEntitiesExtension extends Extension
 
             $container->setDefinition(
                 $serviceName,
-                new Definition(Transaction::class, [new Reference($connectionService)])
+                new Definition(Transaction::class, [new Reference($connectionService)]),
             );
         }
     }
@@ -258,11 +258,11 @@ class SquirrelEntitiesExtension extends Extension
         // Base multi repository services
         $container->setDefinition(
             MultiRepositoryReadOnlyInterface::class,
-            new Definition(MultiRepositoryReadOnly::class)
+            new Definition(MultiRepositoryReadOnly::class),
         );
         $container->setDefinition(
             MultiRepositoryWriteableInterface::class,
-            new Definition(MultiRepositoryWriteable::class)
+            new Definition(MultiRepositoryWriteable::class),
         );
 
         // Builder multi repository services
@@ -270,15 +270,15 @@ class SquirrelEntitiesExtension extends Extension
             MultiRepositoryBuilderReadOnlyInterface::class,
             new Definition(
                 MultiRepositoryBuilderReadOnly::class,
-                [new Reference(MultiRepositoryReadOnlyInterface::class)]
-            )
+                [new Reference(MultiRepositoryReadOnlyInterface::class)],
+            ),
         );
         $container->setDefinition(
             MultiRepositoryBuilderWriteableInterface::class,
             new Definition(
                 MultiRepositoryBuilderWriteable::class,
-                [new Reference(MultiRepositoryWriteableInterface::class)]
-            )
+                [new Reference(MultiRepositoryWriteableInterface::class)],
+            ),
         );
     }
 }

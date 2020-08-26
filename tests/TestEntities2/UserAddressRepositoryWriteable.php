@@ -27,24 +27,24 @@ namespace Squirrel\EntitiesBundle\Tests\TestEntities2 {
             parent::__construct($repository);
         }
 
-        public function insert(): \Squirrel\Entities\Action\InsertEntry
+        public function insert(): \Squirrel\Entities\Builder\InsertEntry
         {
-            return new \Squirrel\Entities\Action\InsertEntry($this->repository);
+            return new \Squirrel\Entities\Builder\InsertEntry($this->repository);
         }
 
-        public function insertOrUpdate(): \Squirrel\Entities\Action\InsertOrUpdateEntry
+        public function insertOrUpdate(): \Squirrel\Entities\Builder\InsertOrUpdateEntry
         {
-            return new \Squirrel\Entities\Action\InsertOrUpdateEntry($this->repository);
+            return new \Squirrel\Entities\Builder\InsertOrUpdateEntry($this->repository);
         }
 
-        public function update(): \Squirrel\Entities\Action\UpdateEntries
+        public function update(): \Squirrel\Entities\Builder\UpdateEntries
         {
-            return new \Squirrel\Entities\Action\UpdateEntries($this->repository);
+            return new \Squirrel\Entities\Builder\UpdateEntries($this->repository);
         }
 
-        public function delete(): \Squirrel\Entities\Action\DeleteEntries
+        public function delete(): \Squirrel\Entities\Builder\DeleteEntries
         {
-            return new \Squirrel\Entities\Action\DeleteEntries($this->repository);
+            return new \Squirrel\Entities\Builder\DeleteEntries($this->repository);
         }
     }
 }

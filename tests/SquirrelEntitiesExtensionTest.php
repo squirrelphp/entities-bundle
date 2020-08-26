@@ -84,7 +84,7 @@ class SquirrelEntitiesExtensionTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(new Reference(DBInterface::class), $baseArguments[0]);
         $this->assertEquals(
             new Definition(RepositoryConfig::class, $this->getUserRepositoryConfig()),
-            $baseArguments[1]
+            $baseArguments[1],
         );
     }
 
@@ -167,7 +167,7 @@ class SquirrelEntitiesExtensionTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(new Reference(DBInterface::class), $baseArguments[0]);
         $this->assertEquals(
             new Definition(RepositoryConfig::class, $userConfig),
-            $baseArguments[1]
+            $baseArguments[1],
         );
 
         // Make sure the services are correctly wired
@@ -188,7 +188,7 @@ class SquirrelEntitiesExtensionTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(new Reference('squirrel.connection.custom_connection'), $baseArguments[0]);
         $this->assertEquals(
             new Definition(RepositoryConfig::class, $addressConfig),
-            $baseArguments[1]
+            $baseArguments[1],
         );
     }
 
@@ -196,7 +196,7 @@ class SquirrelEntitiesExtensionTest extends \PHPUnit\Framework\TestCase
     {
         $extension = new SquirrelEntitiesExtension(
             new EntityProcessor(new AnnotationReader()),
-            new FindClassesWithAnnotation()
+            new FindClassesWithAnnotation(),
         );
 
         $extension->load($configs, $container);

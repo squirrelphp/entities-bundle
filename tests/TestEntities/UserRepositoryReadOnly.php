@@ -25,19 +25,19 @@ namespace Squirrel\EntitiesBundle\Tests\TestEntities {
             $this->repository = $repository;
         }
 
-        public function count(): \Squirrel\Entities\Action\CountEntries
+        public function count(): \Squirrel\Entities\Builder\CountEntries
         {
-            return new \Squirrel\Entities\Action\CountEntries($this->repository);
+            return new \Squirrel\Entities\Builder\CountEntries($this->repository);
         }
 
-        public function select(): \Squirrel\Entities\Action\SquirrelEntitiesBundleTestsTestEntitiesUser\SelectEntries
+        public function select(): \Squirrel\Entities\Builder\SquirrelEntitiesBundleTestsTestEntitiesUser\SelectEntries
         {
-            return new \Squirrel\Entities\Action\SquirrelEntitiesBundleTestsTestEntitiesUser\SelectEntries($this->repository);
+            return new \Squirrel\Entities\Builder\SquirrelEntitiesBundleTestsTestEntitiesUser\SelectEntries($this->repository);
         }
     }
 }
 
-namespace Squirrel\Entities\Action\SquirrelEntitiesBundleTestsTestEntitiesUser {
+namespace Squirrel\Entities\Builder\SquirrelEntitiesBundleTestsTestEntitiesUser {
     /**
      * This class exists to have proper type hints about the object(s) returned in the
      * getEntries and getOneEntry functions. All calls are delegated to the
@@ -48,13 +48,13 @@ namespace Squirrel\Entities\Action\SquirrelEntitiesBundleTestsTestEntitiesUser {
      *
      * @implements \IteratorAggregate<int,\Squirrel\EntitiesBundle\Tests\TestEntities\User>
      */
-    class SelectEntries implements \Squirrel\Entities\Action\ActionInterface, \IteratorAggregate
+    class SelectEntries implements \Squirrel\Queries\Builder\BuilderInterface, \IteratorAggregate
     {
-        private \Squirrel\Entities\Action\SelectEntries $selectImplementation;
+        private \Squirrel\Entities\Builder\SelectEntries $selectImplementation;
 
         public function __construct(\Squirrel\Entities\RepositoryReadOnlyInterface $repository)
         {
-            $this->selectImplementation = new \Squirrel\Entities\Action\SelectEntries($repository);
+            $this->selectImplementation = new \Squirrel\Entities\Builder\SelectEntries($repository);
         }
 
         public function field(string $onlyGetThisField): self
@@ -144,11 +144,11 @@ namespace Squirrel\Entities\Action\SquirrelEntitiesBundleTestsTestEntitiesUser {
     /**
      * @implements \Iterator<int,\Squirrel\EntitiesBundle\Tests\TestEntities\User>
      */
-    class SelectIterator implements \Squirrel\Entities\Action\ActionInterface, \Iterator
+    class SelectIterator implements \Squirrel\Queries\Builder\BuilderInterface, \Iterator
     {
-        private \Squirrel\Entities\Action\SelectIterator $iteratorInstance;
+        private \Squirrel\Entities\Builder\SelectIterator $iteratorInstance;
 
-        public function __construct(\Squirrel\Entities\Action\SelectIterator $iterator)
+        public function __construct(\Squirrel\Entities\Builder\SelectIterator $iterator)
         {
             $this->iteratorInstance = $iterator;
         }
