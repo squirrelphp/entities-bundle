@@ -4,14 +4,14 @@ namespace Squirrel\EntitiesBundle\Tests\TestEntities2;
 
 use Squirrel\Entities\Annotation\Entity;
 use Squirrel\Entities\Annotation\Field;
-use Squirrel\Entities\EntityConstructorTrait;
+use Squirrel\Entities\PopulatePropertiesWithIterableTrait;
 
 /**
  * @Entity("users_address")
  */
 class UserAddress
 {
-    use EntityConstructorTrait;
+    use PopulatePropertiesWithIterableTrait;
 
     /**
      * @Field("user_id")
