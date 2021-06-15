@@ -24,7 +24,7 @@ Configure the directories where the bundle will look for repositories like this 
             - '%kernel.project_dir%/src'
             - '%kernel.project_dir%/possibleOtherDirectory'
 
-It will go through these directories recusively, finding all entities and generated repositories and creating services for the repositories. The details on how to work with the repositories can be found in the documentation for the underlying library [squirrelphp/entities](https://github.com/squirrelphp/entities).
+It will go through these directories recusively, finding all entities, generating repositories and creating services for the repositories. The details on how to work with the repositories can be found in the documentation for the underlying library [squirrelphp/entities](https://github.com/squirrelphp/entities).
 
 Overriding table names and connection names
 -------------------------------------------
@@ -39,7 +39,7 @@ If you are reusing entities from other projects and only want to change the conn
             Application\Entity\User: 'differentdatabase.users'
             Application\Entity\Session: 'sessions_table'
 
-This can also come in handy if you want to change connection names and table names for testing or development, while the annotation values are for the production system. Just use the fully qualified entity class name as the key. If you specify an empty string as connection name the default connection is used (if a default connection was defined through `QueriesBundle`).
+This can also come in handy if you want to change connection names and table names for testing or development, while the attribute values are for the production system. Just use the fully qualified entity class name as the key. If you specify an empty string as connection name the default connection is used (if a default connection was defined through `QueriesBundle`).
 
 Workflow with entities and repositories
 ---------------------------------------
@@ -48,7 +48,7 @@ At this point you should have already configured [squirrelphp/queries-bundle](ht
 
 ### While developing
 
-1. Create annotated entities as explained in [squirrelphp/entities](https://github.com/squirrelphp/entities)
+1. Create entities with attributes as explained in [squirrelphp/entities](https://github.com/squirrelphp/entities)
 2. Run `vendor/bin/squirrel_repositories_generate --source-dir=src` to generate the repositories for your entities - those will be gitignored (add or change the --source-dir entries depending on where your entities are)
 3. Add the directories of your entities to the `squirrel_entities` configuration so repositories are found and initialized automatically when the Symfony service container is compiled.
 4. Use the generated repository classes as type hints in your code and let Symfony autowire these services.

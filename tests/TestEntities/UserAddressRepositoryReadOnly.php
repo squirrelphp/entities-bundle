@@ -18,11 +18,8 @@ namespace Squirrel\EntitiesBundle\Tests\TestEntities {
 
     class UserAddressRepositoryReadOnly implements RepositoryBuilderReadOnlyInterface
     {
-        private RepositoryReadOnlyInterface $repository;
-
-        public function __construct(RepositoryReadOnlyInterface $repository)
+        public function __construct(private RepositoryReadOnlyInterface $repository)
         {
-            $this->repository = $repository;
         }
 
         public function count(): \Squirrel\Entities\Builder\CountEntries
@@ -84,7 +81,7 @@ namespace Squirrel\Entities\Builder\SquirrelEntitiesBundleTestsTestEntitiesUserA
         /**
          * @param array<int|string,string>|string $orderByClauses
          */
-        public function orderBy($orderByClauses): self
+        public function orderBy(array|string $orderByClauses): self
         {
             $this->selectImplementation->orderBy($orderByClauses);
             return $this;
@@ -135,6 +132,38 @@ namespace Squirrel\Entities\Builder\SquirrelEntitiesBundleTestsTestEntitiesUserA
             return $this->selectImplementation->getFlattenedFields();
         }
 
+        /**
+         * @return int[]
+         */
+        public function getFlattenedIntegerFields(): array
+        {
+            return $this->selectImplementation->getFlattenedIntegerFields();
+        }
+
+        /**
+         * @return float[]
+         */
+        public function getFlattenedFloatFields(): array
+        {
+            return $this->selectImplementation->getFlattenedFloatFields();
+        }
+
+        /**
+         * @return string[]
+         */
+        public function getFlattenedStringFields(): array
+        {
+            return $this->selectImplementation->getFlattenedStringFields();
+        }
+
+        /**
+         * @return bool[]
+         */
+        public function getFlattenedBooleanFields(): array
+        {
+            return $this->selectImplementation->getFlattenedBooleanFields();
+        }
+
         public function getIterator(): SelectIterator
         {
             return new SelectIterator($this->selectImplementation->getIterator());
@@ -155,7 +184,13 @@ namespace Squirrel\Entities\Builder\SquirrelEntitiesBundleTestsTestEntitiesUserA
 
         public function current(): \Squirrel\EntitiesBundle\Tests\TestEntities\UserAddress
         {
-            return $this->iteratorInstance->current();
+            $entry = $this->iteratorInstance->current();
+
+            if ($entry instanceof \Squirrel\EntitiesBundle\Tests\TestEntities\UserAddress) {
+                return $entry;
+            }
+
+            throw new \LogicException('Unexpected type encountered - wrong repository might be configured: ' . \get_class($entry));
         }
 
         public function next(): void

@@ -2,59 +2,40 @@
 
 namespace Squirrel\EntitiesBundle\Tests\TestEntities;
 
-use Squirrel\Entities\Annotation as SQL;
+use Squirrel\Entities\Attribute\Entity;
+use Squirrel\Entities\Attribute\Field;
 use Squirrel\Entities\PopulatePropertiesWithIterableTrait;
 
-/**
- * @SQL\Entity("users")
- */
+#[Entity("users")]
 class User
 {
     use PopulatePropertiesWithIterableTrait;
 
-    /**
-     * @SQL\Field("user_id", autoincrement=true)
-     */
+    #[Field("user_id", autoincrement: true)]
     private int $userId = 0;
 
-    /**
-     * @SQL\Field("active")
-     */
+    #[Field("active")]
     private bool $active = false;
 
-    /**
-     * @SQL\Field("user_name")
-     */
+    #[Field("user_name")]
     private string $userName = '';
 
-    /**
-     * @SQL\Field("login_name_md5")
-     */
+    #[Field("login_name_md5")]
     private string $loginNameMD5 = '';
 
-    /**
-     * @SQL\Field("login_password")
-     */
+    #[Field("login_password")]
     private string $loginPassword = '';
 
-    /**
-     * @SQL\Field("email_address")
-     */
+    #[Field("email_address")]
     private string $emailAddress = '';
 
-    /**
-     * @SQL\Field("balance")
-     */
+    #[Field("balance")]
     private float $balance = 0;
 
-    /**
-     * @SQL\Field("location_id")
-     */
+    #[Field("location_id")]
     private ?int $locationId;
 
-    /**
-     * @SQL\Field("create_date")
-     */
+    #[Field("create_date")]
     private int $createDate = 0;
 
     public function getUserId(): int

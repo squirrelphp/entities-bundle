@@ -19,11 +19,8 @@ namespace Squirrel\EntitiesBundle\Tests\TestEntities2 {
     class UserAddressRepositoryWriteable extends UserAddressRepositoryReadOnly implements
         RepositoryBuilderWriteableInterface
     {
-        private RepositoryWriteableInterface $repository;
-
-        public function __construct(RepositoryWriteableInterface $repository)
+        public function __construct(private RepositoryWriteableInterface $repository)
         {
-            $this->repository = $repository;
             parent::__construct($repository);
         }
 

@@ -2,8 +2,8 @@
 
 namespace Squirrel\EntitiesBundle\DependencyInjection;
 
-use Squirrel\Entities\Annotation\EntityProcessor;
-use Squirrel\Entities\Generate\FindClassesWithAnnotation;
+use Squirrel\Entities\Attribute\EntityProcessor;
+use Squirrel\Entities\Generate\FindClassesWithAttribute;
 use Squirrel\Entities\MultiRepositoryBuilderReadOnly;
 use Squirrel\Entities\MultiRepositoryBuilderReadOnlyInterface;
 use Squirrel\Entities\MultiRepositoryBuilderWriteable;
@@ -13,6 +13,7 @@ use Squirrel\Entities\MultiRepositoryReadOnlyInterface;
 use Squirrel\Entities\MultiRepositoryWriteable;
 use Squirrel\Entities\MultiRepositoryWriteableInterface;
 use Squirrel\Entities\RepositoryConfig;
+use Squirrel\Entities\RepositoryConfigInterface;
 use Squirrel\Entities\RepositoryReadOnly;
 use Squirrel\Entities\RepositoryWriteable;
 use Squirrel\Entities\Transaction;
@@ -29,18 +30,10 @@ use Symfony\Component\Finder\Finder;
  */
 class SquirrelEntitiesExtension extends Extension
 {
-    private EntityProcessor $entityProcessor;
-    private FindClassesWithAnnotation $identifyEntityClasses;
-
     public function __construct(
-        EntityProcessor $entityProcessor,
-        FindClassesWithAnnotation $findClassesWithAnnotation
+        private EntityProcessor $entityProcessor,
+        private FindClassesWithAttribute $identifyEntityClasses,
     ) {
-        // Entity annotation processor to find repository config
-        $this->entityProcessor = $entityProcessor;
-
-        // Looks through a PHP file to find possible entity classes
-        $this->identifyEntityClasses = $findClassesWithAnnotation;
     }
 
     public function load(array $configs, ContainerBuilder $container): void
@@ -160,22 +153,18 @@ class SquirrelEntitiesExtension extends Extension
     }
 
     /**
-     * @param ContainerBuilder $container
-     * @param RepositoryConfig $repositoryConfig Configuration of repository according to annotations
      * @param string|null $overrideConnectionName Connection name should be replaced by this configuration setting
      * @param string|null $overrideTableName Table name should be replaced by this configuration setting
      * @return string Connection name (as used when decorating the connection) for this entity
      */
     private function createRepositoryServicesForEntity(
         ContainerBuilder $container,
-        RepositoryConfig $repositoryConfig,
+        RepositoryConfigInterface $repositoryConfig,
         ?string $overrideConnectionName,
-        ?string $overrideTableName
+        ?string $overrideTableName,
     ): string {
         // Connection can be overwritten in configuration
-        $connectionName = isset($overrideConnectionName)
-            ? $overrideConnectionName
-            : $repositoryConfig->getConnectionName();
+        $connectionName = $overrideConnectionName ?? $repositoryConfig->getConnectionName();
 
         // No ReadOnly repository - exit early
         if (!\class_exists($repositoryConfig->getObjectClass() . 'RepositoryReadOnly')) {
@@ -183,9 +172,7 @@ class SquirrelEntitiesExtension extends Extension
         }
 
         // Table name can be overwritten in configuration
-        $tableName = isset($overrideTableName)
-            ? $overrideTableName
-            : $repositoryConfig->getTableName();
+        $tableName = $overrideTableName ?? $repositoryConfig->getTableName();
 
         // Create repository config definition
         $repositoryConfigDef = new Definition(RepositoryConfig::class, [

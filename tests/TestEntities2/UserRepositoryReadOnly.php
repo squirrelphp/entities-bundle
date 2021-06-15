@@ -18,11 +18,8 @@ namespace Squirrel\EntitiesBundle\Tests\TestEntities2 {
 
     class UserRepositoryReadOnly implements RepositoryBuilderReadOnlyInterface
     {
-        private RepositoryReadOnlyInterface $repository;
-
-        public function __construct(RepositoryReadOnlyInterface $repository)
+        public function __construct(private RepositoryReadOnlyInterface $repository)
         {
-            $this->repository = $repository;
         }
 
         public function count(): \Squirrel\Entities\Builder\CountEntries
@@ -84,7 +81,7 @@ namespace Squirrel\Entities\Builder\SquirrelEntitiesBundleTestsTestEntities2User
         /**
          * @param array<int|string,string>|string $orderByClauses
          */
-        public function orderBy($orderByClauses): self
+        public function orderBy(array|string $orderByClauses): self
         {
             $this->selectImplementation->orderBy($orderByClauses);
             return $this;
@@ -109,14 +106,14 @@ namespace Squirrel\Entities\Builder\SquirrelEntitiesBundleTestsTestEntities2User
         }
 
         /**
-         * @return \Squirrel\EntitiesBundle\Tests\TestEntities2\User[]
+         * @return \Squirrel\EntitiesBundle\Tests\TestEntities\User[]
          */
         public function getAllEntries(): array
         {
             return $this->selectImplementation->getAllEntries();
         }
 
-        public function getOneEntry(): ?\Squirrel\EntitiesBundle\Tests\TestEntities2\User
+        public function getOneEntry(): ?\Squirrel\EntitiesBundle\Tests\TestEntities\User
         {
             $entry = $this->selectImplementation->getOneEntry();
 
@@ -133,6 +130,38 @@ namespace Squirrel\Entities\Builder\SquirrelEntitiesBundleTestsTestEntities2User
         public function getFlattenedFields(): array
         {
             return $this->selectImplementation->getFlattenedFields();
+        }
+
+        /**
+         * @return int[]
+         */
+        public function getFlattenedIntegerFields(): array
+        {
+            return $this->selectImplementation->getFlattenedIntegerFields();
+        }
+
+        /**
+         * @return float[]
+         */
+        public function getFlattenedFloatFields(): array
+        {
+            return $this->selectImplementation->getFlattenedFloatFields();
+        }
+
+        /**
+         * @return string[]
+         */
+        public function getFlattenedStringFields(): array
+        {
+            return $this->selectImplementation->getFlattenedStringFields();
+        }
+
+        /**
+         * @return bool[]
+         */
+        public function getFlattenedBooleanFields(): array
+        {
+            return $this->selectImplementation->getFlattenedBooleanFields();
         }
 
         public function getIterator(): SelectIterator
@@ -155,7 +184,13 @@ namespace Squirrel\Entities\Builder\SquirrelEntitiesBundleTestsTestEntities2User
 
         public function current(): \Squirrel\EntitiesBundle\Tests\TestEntities\User
         {
-            return $this->iteratorInstance->current();
+            $entry = $this->iteratorInstance->current();
+
+            if ($entry instanceof \Squirrel\EntitiesBundle\Tests\TestEntities\User) {
+                return $entry;
+            }
+
+            throw new \LogicException('Unexpected type encountered - wrong repository might be configured: ' . \get_class($entry));
         }
 
         public function next(): void

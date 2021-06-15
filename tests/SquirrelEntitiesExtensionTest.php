@@ -2,9 +2,8 @@
 
 namespace Squirrel\EntitiesBundle\Tests;
 
-use Doctrine\Common\Annotations\AnnotationReader;
-use Squirrel\Entities\Annotation\EntityProcessor;
-use Squirrel\Entities\Generate\FindClassesWithAnnotation;
+use Squirrel\Entities\Attribute\EntityProcessor;
+use Squirrel\Entities\Generate\FindClassesWithAttribute;
 use Squirrel\Entities\MultiRepositoryBuilderReadOnlyInterface;
 use Squirrel\Entities\MultiRepositoryBuilderWriteableInterface;
 use Squirrel\Entities\MultiRepositoryReadOnlyInterface;
@@ -28,7 +27,7 @@ use Symfony\Component\DependencyInjection\Reference;
 
 class SquirrelEntitiesExtensionTest extends \PHPUnit\Framework\TestCase
 {
-    public function testNoConfiguration()
+    public function testNoConfiguration(): void
     {
         $container = new ContainerBuilder();
         $configuration = [];
@@ -42,7 +41,7 @@ class SquirrelEntitiesExtensionTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(5, \count($container->getDefinitions())); // + service container
     }
 
-    public function testSimpleConfiguration()
+    public function testSimpleConfiguration(): void
     {
         $container = new ContainerBuilder();
         $configuration = [
@@ -88,7 +87,7 @@ class SquirrelEntitiesExtensionTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testNoWriteRepository()
+    public function testNoWriteRepository(): void
     {
         $container = new ContainerBuilder();
         $configuration = [
@@ -113,7 +112,7 @@ class SquirrelEntitiesExtensionTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(7, \count($container->getDefinitions())); // + service container
     }
 
-    public function testOverwriteTableNameAndConnection()
+    public function testOverwriteTableNameAndConnection(): void
     {
         $container = new ContainerBuilder();
         $configuration = [
@@ -192,11 +191,11 @@ class SquirrelEntitiesExtensionTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    protected function loadExtension(ContainerBuilder $container, array $configs)
+    protected function loadExtension(ContainerBuilder $container, array $configs): void
     {
         $extension = new SquirrelEntitiesExtension(
-            new EntityProcessor(new AnnotationReader()),
-            new FindClassesWithAnnotation(),
+            new EntityProcessor(),
+            new FindClassesWithAttribute(),
         );
 
         $extension->load($configs, $container);

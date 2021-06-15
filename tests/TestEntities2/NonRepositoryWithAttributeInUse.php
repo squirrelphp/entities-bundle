@@ -2,9 +2,9 @@
 
 namespace Squirrel\EntitiesBundle\Tests\TestEntities2;
 
-use Squirrel\Entities\Annotation as SQL;
+use Squirrel\Entities\Attribute as SQL;
 
-class NonRepositoryWithAnnotationInUse
+class NonRepositoryWithAttributeInUse
 {
     private int $userId = 0;
 
