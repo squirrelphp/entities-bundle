@@ -19,6 +19,7 @@ use Squirrel\Entities\RepositoryWriteable;
 use Squirrel\Entities\Transaction;
 use Squirrel\Entities\TransactionInterface;
 use Squirrel\Queries\DBInterface;
+use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\Extension;
@@ -51,12 +52,12 @@ class SquirrelEntitiesExtension extends Extension
         $this->createMultiRepositoryServices($container);
     }
 
-    public function getConfiguration(array $config, ContainerBuilder $container)
+    public function getConfiguration(array $config, ContainerBuilder $container): ?ConfigurationInterface
     {
         return new Configuration($this->getAlias());
     }
 
-    public function getAlias()
+    public function getAlias(): string
     {
         return 'squirrel_entities';
     }
