@@ -24,10 +24,10 @@
     ],
     "require": {
         "php": ">=8.0",
-        "symfony/dependency-injection": "^5.0",
-        "symfony/http-kernel": "^5.0",
-        "symfony/finder": "^5.0",
-        "symfony/config": "^5.0",
+        "symfony/dependency-injection": "^5.0|^6.0",
+        "symfony/http-kernel": "^5.0|^6.0",
+        "symfony/finder": "^5.0|^6.0",
+        "symfony/config": "^5.0|^6.0",
         "squirrelphp/queries-bundle": "^0.13",
         "squirrelphp/entities": "^0.12"
     },

@@ -5,6 +5,7 @@ namespace Squirrel\EntitiesBundle;
 use Squirrel\Entities\Attribute\EntityProcessor;
 use Squirrel\Entities\Generate\FindClassesWithAttribute;
 use Squirrel\EntitiesBundle\DependencyInjection\SquirrelEntitiesExtension;
+use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
@@ -12,7 +13,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class SquirrelEntitiesBundle extends Bundle
 {
-    public function getContainerExtension()
+    public function getContainerExtension(): ?ExtensionInterface
     {
         return new SquirrelEntitiesExtension(
             new EntityProcessor(),
