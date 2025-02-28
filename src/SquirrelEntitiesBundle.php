@@ -11,9 +11,9 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 /**
  * @codeCoverageIgnore Just adds the extension, there is nothing to test
  */
-class SquirrelEntitiesBundle extends Bundle
+final class SquirrelEntitiesBundle extends Bundle
 {
-    public function getContainerExtension(): ?ExtensionInterface
+    public function getContainerExtension(): ExtensionInterface
     {
         return new SquirrelEntitiesExtension(
             new EntityProcessor(),

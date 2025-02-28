@@ -5,13 +5,11 @@ namespace Squirrel\EntitiesBundle\DependencyInjection;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
-class Configuration implements ConfigurationInterface
+final readonly class Configuration implements ConfigurationInterface
 {
-    private string $alias;
-
-    public function __construct(string $alias)
-    {
-        $this->alias = $alias;
+    public function __construct(
+        private string $alias,
+    ) {
     }
 
     public function getConfigTreeBuilder(): TreeBuilder
@@ -24,8 +22,8 @@ class Configuration implements ConfigurationInterface
          * The only configuration options are:
          *
          * - directories (there are no default directories)
-         * - table_names (overwriting annotated table names)
-         * - connection_names (overwriting annotated connection names)
+         * - table_names (overwriting table names in attributes)
+         * - connection_names (overwriting connection names in attributes)
          *
          * @psalm-suppress PossiblyUndefinedMethod
          */

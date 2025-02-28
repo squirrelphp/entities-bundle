@@ -19,7 +19,6 @@ use Squirrel\Entities\RepositoryWriteable;
 use Squirrel\Entities\Transaction;
 use Squirrel\Entities\TransactionInterface;
 use Squirrel\Queries\DBInterface;
-use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\Extension;
@@ -29,19 +28,16 @@ use Symfony\Component\Finder\Finder;
 /**
  * Loads bundle configuration and auto-configures repositories as services
  */
-class SquirrelEntitiesExtension extends Extension
+final class SquirrelEntitiesExtension extends Extension
 {
     public function __construct(
-        private EntityProcessor $entityProcessor,
-        private FindClassesWithAttribute $identifyEntityClasses,
+        private readonly EntityProcessor $entityProcessor,
+        private readonly FindClassesWithAttribute $identifyEntityClasses,
     ) {
     }
 
     public function load(array $configs, ContainerBuilder $container): void
     {
-        /**
-         * @var Configuration $configuration
-         */
         $configuration = $this->getConfiguration([], $container);
         $config = $this->processConfiguration($configuration, $configs);
 
@@ -52,7 +48,7 @@ class SquirrelEntitiesExtension extends Extension
         $this->createMultiRepositoryServices($container);
     }
 
-    public function getConfiguration(array $config, ContainerBuilder $container): ?ConfigurationInterface
+    public function getConfiguration(array $config, ContainerBuilder $container): Configuration
     {
         return new Configuration($this->getAlias());
     }
