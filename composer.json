@@ -24,8 +24,8 @@
     ],
     "require": {
         "php": ">=8.2",
-        "squirrelphp/queries-bundle": "^0.15.6",
-        "squirrelphp/entities": "^2.0",
+        "squirrelphp/queries-bundle": "^0.15.7",
+        "squirrelphp/entities": "^3.0",
         "symfony/config": "^5.0|^6.0|^7.0",
         "symfony/dependency-injection": "^5.0|^6.0|^7.0",
         "symfony/finder": "^5.0|^6.0|^7.0",

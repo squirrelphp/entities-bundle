@@ -4,13 +4,10 @@ namespace Squirrel\EntitiesBundle\Tests\TestEntities2;
 
 use Squirrel\Entities\Attribute\Entity;
 use Squirrel\Entities\Attribute\Field;
-use Squirrel\Entities\PopulatePropertiesWithIterableTrait;
 
 #[Entity("users")]
 class User
 {
-    use PopulatePropertiesWithIterableTrait;
-
     #[Field("user_id", autoincrement: true)]
     private int $userId = 0;
 
