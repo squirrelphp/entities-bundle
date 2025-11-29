@@ -18,14 +18,12 @@ final readonly class Configuration implements ConfigurationInterface
 
         $rootNode = $treeBuilder->getRootNode();
 
-        /**
+        /*
          * The only configuration options are:
          *
          * - directories (there are no default directories)
          * - table_names (overwriting table names in attributes)
          * - connection_names (overwriting connection names in attributes)
-         *
-         * @psalm-suppress PossiblyUndefinedMethod
          */
         $rootNode
             ->fixXmlConfig('directory', 'directories')

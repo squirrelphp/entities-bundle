@@ -2,45 +2,9 @@
 
 $ignoreErrors = [];
 $ignoreErrors[] = [
-	'message' => '#^Call to an undefined method Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\NodeDefinition\\:\\:fixXmlConfig\\(\\)\\.$#',
-	'identifier' => 'method.notFound',
+	'message' => '#^Method Squirrel\\\\EntitiesBundle\\\\DependencyInjection\\\\Configuration\\:\\:getConfigTreeBuilder\\(\\) return type with generic class Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\TreeBuilder does not specify its types\\: T$#',
+	'identifier' => 'missingType.generics',
 	'count' => 1,
-	'path' => __DIR__ . '/../src/DependencyInjection/Configuration.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method arrayNode\\(\\) on mixed\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 3,
-	'path' => __DIR__ . '/../src/DependencyInjection/Configuration.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method children\\(\\) on mixed\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/../src/DependencyInjection/Configuration.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method end\\(\\) on mixed\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 7,
-	'path' => __DIR__ . '/../src/DependencyInjection/Configuration.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method fixXmlConfig\\(\\) on mixed\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 2,
-	'path' => __DIR__ . '/../src/DependencyInjection/Configuration.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method prototype\\(\\) on mixed\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 3,
-	'path' => __DIR__ . '/../src/DependencyInjection/Configuration.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method useAttributeAsKey\\(\\) on mixed\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 2,
 	'path' => __DIR__ . '/../src/DependencyInjection/Configuration.php',
 ];
 $ignoreErrors[] = [

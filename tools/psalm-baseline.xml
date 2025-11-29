@@ -1,8 +1,2 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="5.16.0@2897ba636551a8cb61601cc26f6ccfbba6c36591">
-  <file src="src/DependencyInjection/Configuration.php">
-    <UndefinedMethod>
-      <code>fixXmlConfig</code>
-    </UndefinedMethod>
-  </file>
-</files>
+<files psalm-version="6.13.1@1e3b7f0a8ab32b23197b91107adc0a7ed8a05b51"/>
